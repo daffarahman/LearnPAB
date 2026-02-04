@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -46,6 +49,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GreetingText(message: String, sender: String, modifier: Modifier = Modifier) {
+    var count = remember {
+        mutableStateOf(0)
+    }
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
@@ -63,6 +69,19 @@ fun GreetingText(message: String, sender: String, modifier: Modifier = Modifier)
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally)
         )
+        Text(
+            text = count.value.toString(),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+        )
+        Button(
+            onClick = {
+                count.value++
+            },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Text(text = "Click Me!")
+        }
     }
 }
 
@@ -78,7 +97,7 @@ fun GreetingImage(message: String, sender: String, modifier: Modifier = Modifier
         )
         GreetingText(
             message = message,
-            sender =  sender,
+            sender = sender,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
@@ -90,7 +109,6 @@ fun GreetingImage(message: String, sender: String, modifier: Modifier = Modifier
 @Composable
 fun LearnPABPreview() {
     LearnPABTheme {
-//        GreetingText("Hello Dap!", "Rivan")
         GreetingImage("Happy Birthday Dap!", "Rivan")
     }
 }
