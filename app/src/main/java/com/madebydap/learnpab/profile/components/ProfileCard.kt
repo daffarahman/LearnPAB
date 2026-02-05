@@ -17,20 +17,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.madebydap.learnpab.R
-import com.madebydap.learnpab.profile.Profile
+import com.madebydap.learnpab.profile.ProfileData
 
 @Composable
 fun ProfileCard(
     modifier: Modifier= Modifier,
-    profile: Profile
+    profileData: ProfileData
 ) {
     Row(
         modifier = Modifier.padding(all = 16.dp)
     ) {
         Image(
-            painter = painterResource(profile.image),
-            contentDescription = "${profile.name}'s profile picture",
+            painter = painterResource(profileData.image),
+            contentDescription = "${profileData.name}'s profile picture",
             modifier = Modifier
                 .clip(CircleShape)
                 .size(50.dp)
@@ -40,7 +39,7 @@ fun ProfileCard(
         )
         Column() {
             Text(
-                text = profile.name,
+                text = profileData.name,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -48,7 +47,7 @@ fun ProfileCard(
                 modifier = Modifier.height(4.dp)
             )
             Text(
-                text = profile.email
+                text = profileData.email
             )
         }
     }

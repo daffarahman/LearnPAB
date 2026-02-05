@@ -19,23 +19,32 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.madebydap.learnpab.profile.Profile
+import com.madebydap.learnpab.profile.ProfileData
 import com.madebydap.learnpab.profile.components.ProfileCard
+import com.madebydap.learnpab.profile.getProfileById
 import com.madebydap.learnpab.profile.profiles
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LinkedBrosApp() {
-    val profileList = remember { profiles.toMutableList() }
-    var textInput by remember { mutableStateOf("") }
-    var selectedText by remember { mutableStateOf<String?>(null) }
+    val profileList = remember {
+        profiles.toMutableList()
+    }
+    val tweetList = remember {
+        tweets.toMutableList()
+    }
+    var textInput by remember {
+        mutableStateOf("")
+    }
+    var selectedTweetData by remember {
+        mutableStateOf<TweetData?>(null)
+    }
 
     Scaffold(
         topBar = {
@@ -54,19 +63,19 @@ fun LinkedBrosApp() {
 
             // List Area
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(profileList) { profile ->
+                items(tweetList) { tweet ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp)
-                            .clickable { selectedText = profile.name },
+                            .clickable { selectedTweetData = tweet },
                         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
                         ProfileCard(
-                            profile = profile
+                            profileData = getProfileById(tweet.senderId)
                         )
                         Text(
-                            text = "Ambasing",
+                            text = tweet.content,
                             modifier = Modifier.padding(16.dp)
                         )
                     }
@@ -76,16 +85,20 @@ fun LinkedBrosApp() {
     }
 
     // Popup Logic (AlertDialog)
-    selectedText?.let { text ->
+    selectedTweetData?.let { tweet ->
         AlertDialog(
-            onDismissRequest = { selectedText = null },
+            onDismissRequest = { selectedTweetData = null },
             confirmButton = {
-                TextButton(onClick = { selectedText = null }) {
-                    Text("Tutup")
+                TextButton(onClick = { selectedTweetData = null }) {
+                    Text("Close")
                 }
             },
-            title = { Text("Detail Item") },
-            text = { Text("Anda mengklik: $text") }
+            title = {
+                Text("Tweet")
+            },
+            text = {
+                Text("${tweet.content}")
+            }
         )
     }
 }
